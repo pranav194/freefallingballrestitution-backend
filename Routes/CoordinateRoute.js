@@ -13,7 +13,7 @@ router.get('/',(req,res,next)=>{
         {
             const g = req.query.g||9.8;
             let time = 0;
-            let timegap = 0.5;
+            let timegap = Math.min(0.5,height/100);
             let getdata = getData(height,time,e,g,timegap);
             let bounce = 0;
             getdata.forEach(Coordinate=>{
@@ -83,12 +83,12 @@ const getData=(height,time,e,g,timegap)=>{
     //time to rise
     const timetofall2 = e*timetofall1;
     let datas2 = [];
-    for(let i = 0;i<=timetofall2;i+=timegap)
+    for(let i = 0;i<timetofall2;i+=timegap)
     {
       let h = e*e*height - 1/2*g*i*i;
       datas2 = [{x:timetofall2+timetofall1-i+time,y:h},...datas2]
     }
-    datas2 =[...datas2,{x:timetofall1+timetofall2+time,y:parseInt(e*e*height)}];
+    // datas2 =[...datas2,{x:timetofall1+timetofall2+time,y:parseInt(e*e*height)}];
 
     //Recursively Calling the function
     const newTime = timetofall2+timetofall1+time;
